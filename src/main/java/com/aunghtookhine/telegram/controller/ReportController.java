@@ -5,6 +5,7 @@ import com.aunghtookhine.telegram.response.ResponseMessage;
 import com.aunghtookhine.telegram.service.ReportService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class ReportController {
     }
 
     @GetMapping
-    public void exportReport(HttpServletResponse response, @RequestParam("date")LocalDate date) throws IOException {
-        reportService.exportReport(response, date);
+    public ResponseEntity<InputStreamResource> exportReport(HttpServletResponse response, @RequestParam("date")LocalDate date) throws IOException {
+        return reportService.exportReport(date);
     }
 }

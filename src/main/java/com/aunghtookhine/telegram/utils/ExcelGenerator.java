@@ -1,84 +1,56 @@
 package com.aunghtookhine.telegram.utils;
 
 import com.aunghtookhine.telegram.entity.Report;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class ExcelGenerator {
-    private final List<Report> reports;
-    private final XSSFWorkbook xssfWorkbook;
-    private final XSSFSheet xssfSheet;
+    public ByteArrayInputStream createExcelFile(LocalDate date, List<Report> reports) throws IOException {
+        // Create a new Excel workbook and sheet
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Report for " + date);
 
-    public ExcelGenerator(List<Report> reports) {
-        this.reports = reports;
-        this.xssfWorkbook = new XSSFWorkbook();
-        this.xssfSheet = xssfWorkbook.createSheet("report");
-    }
+        // Create a header row
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("ID");
+        headerRow.createCell(1).setCellValue("Date");
+        headerRow.createCell(2).setCellValue("Title");
+        headerRow.createCell(3).setCellValue("Description");
+        headerRow.createCell(4).setCellValue("CreatedBy");
+        headerRow.createCell(5).setCellValue("CreatedAt");
+        headerRow.createCell(6).setCellValue("UpdatedAt");
 
-    private void writeHeader(){
-        Row row = xssfSheet.createRow(0);
-        CellStyle style = xssfWorkbook.createCellStyle();
-        XSSFFont font = xssfWorkbook.createFont();
-        font.setBold(true);
-        font.setFontHeight(16);
-        style.setFont(font);
-        createCell(row, 0, "ID", style);
-        createCell(row, 1, "Date", style);
-        createCell(row, 2, "Title", style);
-        createCell(row, 3, "Description", style);
-        createCell(row, 4, "CreatedBy", style);
-        createCell(row, 5, "CreatedAt", style);
-        createCell(row, 6, "UpdatedAt", style);
-    }
-
-    private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style){
-        xssfSheet.autoSizeColumn(columnCount);
-        Cell cell = row.createCell(columnCount);
-        if(valueOfCell instanceof String){
-            cell.setCellValue((String) valueOfCell);
-        }else if (valueOfCell instanceof LocalDate){
-            cell.setCellValue((LocalDate) valueOfCell);
-        }
-        cell.setCellStyle(style);
-    }
-
-    private void write(){
         int rowCount = 1;
-        CellStyle style = xssfWorkbook.createCellStyle();
-        XSSFFont font = xssfWorkbook.createFont();
-        font.setFontHeight(14);
-        style.setFont(font);
         for (Report report: reports){
-            Row row = xssfSheet.createRow(rowCount++);
-            int columnCount = 0;
-            createCell(row, columnCount++, report.getId(), style);
-            createCell(row, columnCount++, report.getDate(), style);
-            createCell(row, columnCount++, report.getTitle(), style);
-            createCell(row, columnCount++, report.getDescription(), style);
-            createCell(row, columnCount++, report.getCreatedBy(), style);
-            createCell(row, columnCount++, report.getCreatedAt(), style);
-            createCell(row, columnCount++, report.getUpdatedAt(), style);
+            Row row = sheet.createRow(rowCount++);
+            headerRow.createCell(0).setCellValue(report.getId());
+            headerRow.createCell(1).setCellValue(report.getDate());
+            headerRow.createCell(2).setCellValue(report.getTitle());
+            headerRow.createCell(3).setCellValue(report.getDescription());
+            headerRow.createCell(4).setCellValue(report.getCreatedBy());
+            headerRow.createCell(5).setCellValue(report.getCreatedAt());
+            headerRow.createCell(6).setCellValue(report.getCreatedBy());
         }
-    }
 
-    public void generateExcelFIle(HttpServletResponse response) throws IOException {
-        writeHeader();
-        write();
-        ServletOutputStream outputStream = response.getOutputStream();
-        xssfWorkbook.write(outputStream);
-        xssfWorkbook.close();
-        outputStream.close();
-    }
+//        // Adjust column width to fit content
+//        for (int i = 0; i < 3; i++) {
+//            sheet.autoSizeColumn(i);
+//        }
 
+        // Write the workbook to a byte array output stream
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        workbook.write(out);
+        workbook.close();
+
+        // Return the workbook as a ByteArrayInputStream
+        return new ByteArrayInputStream(out.toByteArray());
+    }
 }
