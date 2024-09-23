@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,13 +13,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+@Component
 public class ExcelGenerator {
     public ByteArrayInputStream createExcelFile(LocalDate date, List<Report> reports) throws IOException {
-        // Create a new Excel workbook and sheet
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Report for " + date);
+        Sheet sheet = workbook.createSheet("Report ("+ date +")");
 
-        // Create a header row
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("ID");
         headerRow.createCell(1).setCellValue("Date");
@@ -31,26 +31,23 @@ public class ExcelGenerator {
         int rowCount = 1;
         for (Report report: reports){
             Row row = sheet.createRow(rowCount++);
-            headerRow.createCell(0).setCellValue(report.getId());
-            headerRow.createCell(1).setCellValue(report.getDate());
-            headerRow.createCell(2).setCellValue(report.getTitle());
-            headerRow.createCell(3).setCellValue(report.getDescription());
-            headerRow.createCell(4).setCellValue(report.getCreatedBy());
-            headerRow.createCell(5).setCellValue(report.getCreatedAt());
-            headerRow.createCell(6).setCellValue(report.getCreatedBy());
+            row.createCell(0).setCellValue(report.getId());
+            row.createCell(1).setCellValue(report.getDate().toString());
+            row.createCell(2).setCellValue(report.getTitle());
+            row.createCell(3).setCellValue(report.getDescription());
+            row.createCell(4).setCellValue(report.getCreatedBy());
+            row.createCell(5).setCellValue(report.getCreatedAt().toString());
+            row.createCell(6).setCellValue(report.getUpdatedAt().toString());
         }
 
-//        // Adjust column width to fit content
-//        for (int i = 0; i < 3; i++) {
-//            sheet.autoSizeColumn(i);
-//        }
+        for (int i = 0; i < 7; i++) {
+            sheet.autoSizeColumn(i);
+        }
 
-        // Write the workbook to a byte array output stream
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         workbook.write(out);
         workbook.close();
 
-        // Return the workbook as a ByteArrayInputStream
         return new ByteArrayInputStream(out.toByteArray());
     }
 }

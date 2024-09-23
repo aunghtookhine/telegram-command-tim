@@ -28,7 +28,7 @@ public class ReportController {
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> exportReport(HttpServletResponse response, @RequestParam("date")LocalDate date) throws IOException {
+    public ResponseEntity<InputStreamResource> exportReport(@RequestParam("date")LocalDate date) throws IOException {
         return reportService.exportReport(date);
     }
 }
