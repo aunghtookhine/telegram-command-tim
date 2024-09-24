@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,13 +35,8 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public ResponseEntity<InputStreamResource> exportReport(LocalDate date) throws IOException{
+    public File exportReport(LocalDate date) throws IOException{
         List<Report> reports = reportRepository.findAllByDate(date);
-        ByteArrayInputStream excelFile = excelGenerator.createExcelFile(date, reports);
-        InputStreamResource resource = new InputStreamResource(excelFile);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + date + ".xlsx")
-                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                .body(resource);
+        return excelGenerator.createExcelFile(date, reports);
     }
 }

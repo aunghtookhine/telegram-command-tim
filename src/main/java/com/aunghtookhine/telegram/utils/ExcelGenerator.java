@@ -7,15 +7,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Component
 public class ExcelGenerator {
-    public ByteArrayInputStream createExcelFile(LocalDate date, List<Report> reports) throws IOException {
+    public File createExcelFile(LocalDate date, List<Report> reports) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Report ("+ date +")");
 
@@ -44,10 +42,14 @@ public class ExcelGenerator {
             sheet.autoSizeColumn(i);
         }
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        workbook.write(out);
+        File file = new File("src/main/resources/", date + ".xlsx");
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            workbook.write(fos);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
         workbook.close();
-
-        return new ByteArrayInputStream(out.toByteArray());
+        return file;
     }
 }
+

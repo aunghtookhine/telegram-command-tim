@@ -9,12 +9,9 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/report")
@@ -28,7 +25,7 @@ public class ReportController {
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> exportReport(@RequestParam("date")LocalDate date) throws IOException {
+    public File exportReport(@RequestParam("date")LocalDate date) throws IOException {
         return reportService.exportReport(date);
     }
 }
