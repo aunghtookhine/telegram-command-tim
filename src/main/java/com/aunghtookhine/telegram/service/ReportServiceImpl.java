@@ -41,5 +41,4 @@ public class ReportServiceImpl implements ReportService{
         List<Report> reports = reportRepository.findAllByDate(date);
         return excelGenerator.createExcelFile(date, reports);
     }
-
 }

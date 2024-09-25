@@ -1,6 +1,7 @@
 package com.aunghtookhine.telegram.controller;
 
 import com.aunghtookhine.telegram.dto.ReportDto;
+import com.aunghtookhine.telegram.entity.Report;
 import com.aunghtookhine.telegram.response.ResponseMessage;
 import com.aunghtookhine.telegram.service.ReportService;
 import lombok.AllArgsConstructor;
@@ -28,8 +29,4 @@ public class ReportController {
         return reportService.exportReport(date);
     }
 
-    @GetMapping("/latest")
-    public List<String> getLatestRecord(){
-        return reportService.getLatestRecord();
-    }
 }
