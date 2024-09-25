@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface ReportService {
     ResponseEntity<ResponseMessage> createReport(ReportDto dto);

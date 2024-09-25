@@ -3,15 +3,14 @@ package com.aunghtookhine.telegram.controller;
 import com.aunghtookhine.telegram.dto.ReportDto;
 import com.aunghtookhine.telegram.response.ResponseMessage;
 import com.aunghtookhine.telegram.service.ReportService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/report")
@@ -27,5 +26,10 @@ public class ReportController {
     @GetMapping
     public File exportReport(@RequestParam("date")LocalDate date) throws IOException {
         return reportService.exportReport(date);
+    }
+
+    @GetMapping("/latest")
+    public List<String> getLatestRecord(){
+        return reportService.getLatestRecord();
     }
 }

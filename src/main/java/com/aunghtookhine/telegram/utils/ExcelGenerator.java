@@ -1,6 +1,8 @@
 package com.aunghtookhine.telegram.utils;
 
+import com.aunghtookhine.telegram.config.AppConfig;
 import com.aunghtookhine.telegram.entity.Report;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -12,7 +14,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
+@Slf4j
 public class ExcelGenerator {
+    private final AppConfig appConfig;
+
+    public ExcelGenerator(AppConfig appConfig) {
+        this.appConfig = appConfig;
+    }
+
     public File createExcelFile(LocalDate date, List<Report> reports) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Report ("+ date +")");
@@ -42,11 +51,11 @@ public class ExcelGenerator {
             sheet.autoSizeColumn(i);
         }
 
-        File file = new File("src/main/resources/", date + ".xlsx");
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            workbook.write(fos);
+        File file = new File(appConfig.getResourceDir(), date + ".xlsx");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+            workbook.write(fileOutputStream);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            log.error("Error occurred while creating excel file: {}", e.getMessage());
         }
         workbook.close();
         return file;
