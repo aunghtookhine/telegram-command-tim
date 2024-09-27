@@ -2,8 +2,6 @@ package com.aunghtookhine.telegram.repository;
 
 import com.aunghtookhine.telegram.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;

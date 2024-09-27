@@ -5,22 +5,13 @@ import com.aunghtookhine.telegram.entity.Report;
 import com.aunghtookhine.telegram.mapper.ReportMapper;
 import com.aunghtookhine.telegram.repository.ReportRepository;
 import com.aunghtookhine.telegram.response.ResponseMessage;
-//import com.aunghtookhine.telegram.utils.ExcelCreate;
 import com.aunghtookhine.telegram.utils.ExcelGenerator;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.cglib.core.Local;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
