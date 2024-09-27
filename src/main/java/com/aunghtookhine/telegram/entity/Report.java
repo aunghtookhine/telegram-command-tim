@@ -1,9 +1,7 @@
 package com.aunghtookhine.telegram.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.aunghtookhine.telegram.enums.ReportType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +20,7 @@ public class Report extends BaseEntity {
     private String title;
     private String description;
     private LocalDate date;
+    @Enumerated(EnumType.STRING)
+    private ReportType reportType;
     private String createdBy;
 }

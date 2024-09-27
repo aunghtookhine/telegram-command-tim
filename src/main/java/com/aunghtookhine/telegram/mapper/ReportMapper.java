@@ -11,10 +11,11 @@ public class ReportMapper {
         report.setTitle(dto.getTitle());
         report.setDate(dto.getDate());
         report.setDescription(dto.getDescription());
+        report.setReportType(dto.getReportType());
         report.setCreatedBy(dto.getCreatedBy());
         return report;
     }
     public ReportDto toReportDto(Report report){
-        return new ReportDto(report.getTitle(), report.getDescription(), report.getDate(), report.getCreatedBy());
+        return new ReportDto(report.getTitle(), report.getDescription(), report.getDate(), report.getReportType(), report.getCreatedBy());
     }
 }

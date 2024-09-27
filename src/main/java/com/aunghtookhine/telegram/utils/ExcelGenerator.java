@@ -30,9 +30,10 @@ public class ExcelGenerator {
         headerRow.createCell(1).setCellValue("Date");
         headerRow.createCell(2).setCellValue("Title");
         headerRow.createCell(3).setCellValue("Description");
-        headerRow.createCell(4).setCellValue("CreatedBy");
-        headerRow.createCell(5).setCellValue("CreatedAt");
-        headerRow.createCell(6).setCellValue("UpdatedAt");
+        headerRow.createCell(4).setCellValue("Report Type");
+        headerRow.createCell(5).setCellValue("CreatedBy");
+        headerRow.createCell(6).setCellValue("CreatedAt");
+        headerRow.createCell(7).setCellValue("UpdatedAt");
 
         int rowCount = 1;
         for (Report report: reports){
@@ -41,9 +42,10 @@ public class ExcelGenerator {
             row.createCell(1).setCellValue(report.getDate().toString());
             row.createCell(2).setCellValue(report.getTitle());
             row.createCell(3).setCellValue(report.getDescription());
-            row.createCell(4).setCellValue(report.getCreatedBy());
-            row.createCell(5).setCellValue(report.getCreatedAt().toString());
-            row.createCell(6).setCellValue(report.getUpdatedAt().toString());
+            row.createCell(4).setCellValue(report.getReportType().toString());
+            row.createCell(5).setCellValue(report.getCreatedBy());
+            row.createCell(6).setCellValue(report.getCreatedAt().toString());
+            row.createCell(7).setCellValue(report.getUpdatedAt().toString());
         }
 
         for (int i = 0; i < 7; i++) {
