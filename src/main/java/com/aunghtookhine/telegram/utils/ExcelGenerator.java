@@ -2,6 +2,7 @@ package com.aunghtookhine.telegram.utils;
 
 import com.aunghtookhine.telegram.config.AppConfig;
 import com.aunghtookhine.telegram.entity.Report;
+import com.aunghtookhine.telegram.enums.ReportType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -9,7 +10,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import java.io.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -21,7 +21,7 @@ public class ExcelGenerator {
         this.appConfig = appConfig;
     }
 
-    public File createExcelFile(LocalDate date, List<Report> reports) throws IOException {
+    public File createExcelFile(String date, List<Report> reports, ReportType reportType) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Report ("+ date +")");
 
@@ -52,7 +52,7 @@ public class ExcelGenerator {
             sheet.autoSizeColumn(i);
         }
 
-        File file = new File(appConfig.getResourceDir(), date + ".xlsx");
+        File file = new File(appConfig.getResourceDir(), String.format("%s-%s.xlsx",date, reportType));
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             workbook.write(fileOutputStream);
         } catch (IOException e) {

@@ -26,15 +26,15 @@ public class ReportController {
 
     @GetMapping("/daily")
     public File exportDailyReport(
-            @RequestParam(value = "date")LocalDate date,
+            @RequestParam(value = "date") String date,
             @RequestParam(value = "type")ReportType reportType) throws IOException {
         return reportService.exportDailyReport(date, reportType);
     }
 
-//    @GetMapping("/monthly")
-//    public File exportMonthlyReport(
-//            @RequestParam(value = "month")Integer month,
-//            @RequestParam(value = "type")ReportType reportType) throws IOException {
-//        return reportService.exportMonthlyReport(date, reportType);
-//    }
+    @GetMapping("/monthly")
+    public File exportMonthlyReport(
+            @RequestParam(value = "month")String yearMonth,
+            @RequestParam(value = "type")ReportType reportType) throws IOException {
+        return reportService.exportMonthlyReport(yearMonth, reportType);
+    }
 }

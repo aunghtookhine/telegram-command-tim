@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +28,20 @@ public class ReportServiceImpl implements ReportService{
         for (ReportDto dto: dtos){
             reports.add(reportMapper.toReport(dto));
         }
-//        Report savedReport = reportRepository.save(reportMapper.toReport(dto));
         List<Report> savedReports = reportRepository.saveAll(reports);
         return ResponseEntity.ok().body(new ResponseMessage("Success", savedReports));
     }
 
     @Override
-    public File exportDailyReport(LocalDate date, ReportType reportType) throws IOException{
-        List<Report> reports = reportRepository.findAllByDateAndReportType(date, reportType);
-        return excelGenerator.createExcelFile(date, reports);
+    public File exportDailyReport(String date, ReportType reportType) throws IOException{
+        List<Report> reports = reportRepository.findAllByDateAndReportType(date, reportType.name());
+        return excelGenerator.createExcelFile(date, reports, reportType);
+    }
+
+    @Override
+    public File exportMonthlyReport(String yearMonth, ReportType reportType) throws IOException {
+        List<Report> reports = reportRepository.findAllByDateLikeAndReportType(yearMonth, reportType.name());
+        return excelGenerator.createExcelFile(yearMonth, reports, reportType);
     }
 
 }

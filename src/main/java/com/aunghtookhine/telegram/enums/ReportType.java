@@ -5,13 +5,4 @@ public enum ReportType {
     CORE_SYSTEM,
     MAU,
     GIFT_CODE;
-
-    public static boolean contains(String test) {
-        for (ReportType reportType : ReportType.values()) {
-            if (reportType.name().equals(test)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
